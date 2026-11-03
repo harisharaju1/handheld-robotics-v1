@@ -26,7 +26,6 @@ for sub in ("step", "stl", "dxf"):
 
 
 def parts():
-    saddle, cap = chassis.motor_clamp()
     spacer, _ = chassis.caster_spacer()
     # name: (workplane, qty, printed?)
     return {
@@ -34,8 +33,7 @@ def parts():
         "00_coupon_bores": (coupons.bores_coupon(), 1, True),
         "10_deck_lower": (chassis.deck(lower=True), 1, False),
         "11_deck_upper": (chassis.deck(lower=False), 1, False),
-        "20_motor_clamp_saddle": (saddle, 2, True),
-        "21_motor_clamp_cap": (cap, 2, True),
+        "20_motor_adapter": (chassis.motor_adapter(), 2, True),
         "22_caster_spacer": (spacer, 2, True),
         "30_battery_tray": (payload.battery_tray(), 1, True),
         "31_electronics_plate": (payload.electronics_plate(), 1, True),
@@ -61,19 +59,25 @@ def assembly(built):
         a.add(vcyl(P.STANDOFF_D, P.STANDOFF_H), name=f"standoff_{i}", loc=L(V(x, y, zl + t)), color=metal)
     for side, sign in (("left", 1), ("right", -1)):
         rot = 0 if sign > 0 else 180
-        a.add(built["20_motor_clamp_saddle"], name=f"clamp_saddle_{side}",
-              loc=L(V(0, sign * P.CLAMP_Y, zl), V(0, 0, 1), rot), color=print_c)
-        a.add(built["21_motor_clamp_cap"], name=f"clamp_cap_{side}",
-              loc=L(V(0, sign * P.CLAMP_Y, zl), V(0, 0, 1), rot), color=print_c)
-        y_motor0 = P.MOTOR_FACE_Y - P.MOTOR_LEN if sign > 0 else -P.MOTOR_FACE_Y
-        a.add(ycyl(P.MOTOR_D, P.MOTOR_LEN, 0, y_motor0, P.AXLE_Z), name=f"motor_{side}", color=metal)
+        a.add(built["20_motor_adapter"], name=f"motor_adapter_{side}",
+              loc=L(V(0, sign * P.FOOT_CY, zl - P.ADAPTER_T), V(0, 0, 1), rot), color=print_c)
+        fx, fy = P.BRACKET_FOOT
+        a.add(box(fx, fy, 2.5, cy=sign * P.FOOT_CY, z0=zl - P.ADAPTER_T - 2.5),
+              name=f"bracket_foot_{side}", color=dark)
+        m_len = fy + P.ENCODER_PAST_FOOT
+        y_motor0 = P.FOOT_OUTER_Y - m_len if sign > 0 else -P.FOOT_OUTER_Y
+        a.add(ycyl(P.MOTOR_D, m_len, 0, y_motor0, P.AXLE_Z - P.MOTOR_OFFSET),
+              name=f"motor_{side}", color=metal)
+        y_shaft0 = P.FOOT_OUTER_Y if sign > 0 else -P.FOOT_OUTER_Y - P.FOOT_TO_WHEEL
+        a.add(ycyl(9.0, P.FOOT_TO_WHEEL, 0, y_shaft0, P.AXLE_Z), name=f"hub_{side}",
+              color=color(.80, .65, .25))
         y_wheel0 = P.TRACK / 2 - P.WHEEL_W / 2 if sign > 0 else -P.TRACK / 2 - P.WHEEL_W / 2
         a.add(ycyl(P.WHEEL_D, P.WHEEL_W, 0, y_wheel0, P.AXLE_Z), name=f"wheel_{side}", color=dark)
     sp_h = P.LOWER_DECK_Z - P.CASTER_H - P.CASTER_PRELOAD
     for name, x in (("front", P.CASTER_X), ("rear", -P.CASTER_X)):
         a.add(built["22_caster_spacer"], name=f"caster_spacer_{name}", loc=L(V(x, 0, zl - sp_h)), color=print_c)
         a.add(vcyl(28, P.CASTER_H), name=f"caster_{name}", loc=L(V(x, 0, P.CASTER_PRELOAD)), color=metal)
-    bx, by = P.BATT_TRAY_CENTER
+    bx, by = P.BATT_TRAY_CENTER  # noqa
     a.add(built["30_battery_tray"], name="battery_tray", loc=L(V(bx, by, zl + t)), color=print_c)
     a.add(box(*P.BATTERY), name="battery_3s", loc=L(V(bx, by, zl + t + 3.0)), color=color(.23, .43, .65))
     ex, ey = P.EPLATE_CENTER
@@ -117,6 +121,9 @@ def main():
             print(f"FAIL {name}")
             traceback.print_exc()
 
+    print(f"info lower deck underside {P.LOWER_DECK_Z:.2f} mm, upper deck {P.UPPER_DECK_Z:.2f} mm, "
+          f"caster spacer {P.LOWER_DECK_Z - P.CASTER_H - P.CASTER_PRELOAD:.2f} mm, "
+          f"ground clearance under motors {P.GROUND_CLEARANCE:.2f} mm")
     if not filt and not failed:
         try:
             a = assembly(built)

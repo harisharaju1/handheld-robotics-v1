@@ -5,19 +5,33 @@ from parts.common import box, vcyl, drill, square_pts
 
 
 def battery_tray():
+    """Low-walled tray for the 3S2P pack laid flat. Rear (-X) end open for the
+    leads; strap slots through both side walls at floor level; countersunk M3
+    screws down through the floor and deck; reliefs over the rear caster screws."""
     bx, by, bz = P.BATTERY
-    wall, base = 2.4, 3.0
-    ox, oy = bx + 2 * wall + 1.0, by + 2 * wall + 1.0
-    t = box(ox, oy, base + 10)
-    t = t.cut(box(bx + 1.0, by + 1.0, 20, z0=base))
-    # open one short end for the balance lead / XT60
-    t = t.cut(box(wall * 3, by - 16, 20, cx=-ox / 2, z0=base))
-    # strap slots through the base, across the pack
+    wall, base, c = 2.4, 3.0, P.BATT_CLEAR
+    px, py = bx + 2 * c, by + 2 * c
+    ox, oy = px + 2 * wall, py + 2 * wall
+    t = box(ox, oy, base + P.BATT_WALL_H)
+    t = t.cut(box(px, py, 40, z0=base))
+    # open rear end for orange/black main leads, DC jack and balance lead
+    t = t.cut(box(wall * 3, py - 16, 40, cx=-ox / 2, z0=base))
+    # strap slots (20 mm Velcro) through both side walls, at floor level
     for sx in (-1, 1):
-        t = t.cut(box(4, 22, base + 2, cx=sx * (bx / 2 - 12), cy=0, z0=-1))
-    # deck screws, matching chassis._rect_corners(battery + 12)
-    hx, hy = (bx + 12) / 2 - 6, (by + 12) / 2 - 6
-    t = drill(t, [(a * hx, b * hy) for a in (-1, 1) for b in (-1, 1)], P.M3_CLEAR, -1, base + 2)
+        for sy in (-1, 1):
+            t = t.cut(box(22, wall * 3, 4.0, cx=sx * (bx / 2 - 15), cy=sy * oy / 2, z0=base))
+    # countersunk deck screws (head sits flush inside the pocket)
+    for (x, y) in P.TRAY_HOLES:
+        t = t.cut(vcyl(P.M3_CLEAR, base + 2, x, y, -1))
+        t = t.cut(cq.Workplane("XY").add(cq.Solid.makeCone(
+            P.M3_CLEAR / 2, 3.4, 1.7, cq.Vector(x, y, base - 1.7 + 0.01), cq.Vector(0, 0, 1))))
+    # reliefs for caster screw heads under the tray
+    cx0, cy0 = P.BATT_TRAY_CENTER
+    for cx in (P.CASTER_X, -P.CASTER_X):
+        for sy in (-1, 1):
+            x, y = cx - cx0, sy * P.CASTER_PITCH / 2 - cy0
+            if abs(x) < ox / 2 and abs(y) < oy / 2:
+                t = t.cut(vcyl(7.5, base + 2, x, y, -1))
     return t
 
 
