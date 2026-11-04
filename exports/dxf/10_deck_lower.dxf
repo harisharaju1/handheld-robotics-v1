@@ -493,7 +493,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461348.964965278
+2461349.8409722224
   9
 $TDUCREATE
  40
@@ -501,7 +501,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461348.964965278
+2461349.8409722224
   9
 $TDUUPDATE
  40
@@ -933,11 +933,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{678DE877-7C9C-448B-AF97-3BF527810963}
+{A502FBD3-0249-4ECE-94B0-D729B5DBC2BB}
   9
 $VERSIONGUID
   2
-{CB9630E2-BA99-4639-9A8E-B4E17F6B681E}
+{F2CAD8B8-4C23-4310-BAC4-FCA0D987A1B8}
   9
 $EXTNAMES
 290
@@ -1327,9 +1327,9 @@ ISM
   0
 CLASS
   1
-LAYOUT
+ACDBPLACEHOLDER
   2
-AcDbLayout
+AcDbPlaceHolder
   3
 ObjectDBX Classes
  90
@@ -1343,9 +1343,9 @@ ObjectDBX Classes
   0
 CLASS
   1
-ACDBPLACEHOLDER
+LAYOUT
   2
-AcDbPlaceHolder
+AcDbLayout
   3
 ObjectDBX Classes
  90
@@ -2275,13 +2275,13 @@ AcDbEntity
 100
 AcDbCircle
  10
--22.0
+-21.5
  20
--84.25
+-83.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -2335,13 +2335,13 @@ AcDbEntity
 100
 AcDbCircle
  10
--22.0
+-21.5
  20
--38.25
+-38.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -2355,13 +2355,13 @@ AcDbEntity
 100
 AcDbCircle
  10
-22.0
+21.5
  20
--84.25
+-83.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -2395,13 +2395,13 @@ AcDbEntity
 100
 AcDbCircle
  10
-22.0
+21.5
  20
--38.25
+-38.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -2675,13 +2675,13 @@ AcDbEntity
 100
 AcDbCircle
  10
--22.0
+-21.5
  20
-38.25
+38.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -2715,13 +2715,13 @@ AcDbEntity
 100
 AcDbCircle
  10
--22.0
+-21.5
  20
-84.25
+83.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -2755,13 +2755,13 @@ AcDbEntity
 100
 AcDbCircle
  10
-22.0
+21.5
  20
-38.25
+38.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -2835,13 +2835,13 @@ AcDbEntity
 100
 AcDbCircle
  10
-22.0
+21.5
  20
-84.25
+83.75
  30
 0.0
  40
-1.7
+1.0
   0
 CIRCLE
   5
@@ -3865,7 +3865,7 @@ DictionaryVariables
 280
 0
   1
-1.4.4 @ 2026-11-03T17:39:33.160210+00:00
+1.4.4 @ 2026-11-04T14:41:00.962415+00:00
   0
 DICTIONARYVAR
   5
@@ -3877,7 +3877,7 @@ DictionaryVariables
 280
 0
   1
-1.4.4 @ 2026-11-03T17:39:33.168045+00:00
+1.4.4 @ 2026-11-04T14:41:00.970221+00:00
   0
 ENDSEC
   0

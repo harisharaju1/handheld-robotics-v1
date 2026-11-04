@@ -24,6 +24,18 @@ def adapter_deck_holes():
     return pts
 
 
+def foot_mark_holes():
+    """Locating holes just outside each bracket-foot corner (both motors)."""
+    hx = P.BRACKET_FOOT[0] / 2 + P.FOOT_MARK_GAP
+    hy = P.BRACKET_FOOT[1] / 2 + P.FOOT_MARK_GAP
+    pts = []
+    for sign in (1, -1):
+        for a in (-1, 1):
+            for b in (-1, 1):
+                pts.append((a * hx, sign * (P.FOOT_CY + b * hy)))
+    return pts
+
+
 def caster_deck_holes():
     return [(cx, sy * P.CASTER_PITCH / 2) for cx in (P.CASTER_X, -P.CASTER_X) for sy in (-1, 1)]
 
@@ -45,7 +57,10 @@ def deck(lower: bool):
             d = d.cut(cq.Workplane("XY")
                       .box(2 * P.WHEEL_SLOT_HALF_X, slot_len, t + 2, centered=(True, False, False))
                       .translate((0, y0, -1)))
-        d = drill(d, adapter_deck_holes(), P.M3_CLEAR, -1, t + 2)
+        if P.ADAPTER_T > 0:
+            d = drill(d, adapter_deck_holes(), P.M3_CLEAR, -1, t + 2)
+        else:
+            d = drill(d, foot_mark_holes(), P.FOOT_MARK_D, -1, t + 2)
         d = drill(d, caster_deck_holes(), P.M3_CLEAR, -1, t + 2)
         d = drill(d, tray_deck_holes(), P.M3_CLEAR, -1, t + 2)
         d = drill(d, _rect_corners(P.EPLATE_SIZE, P.EPLATE_CENTER), P.M3_CLEAR, -1, t + 2)

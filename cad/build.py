@@ -28,12 +28,11 @@ for sub in ("step", "stl", "dxf"):
 def parts():
     spacer, _ = chassis.caster_spacer()
     # name: (workplane, qty, printed?)
-    return {
+    d = {
         "00_coupon_holes": (coupons.holes_coupon(), 1, True),
         "00_coupon_bores": (coupons.bores_coupon(), 1, True),
         "10_deck_lower": (chassis.deck(lower=True), 1, False),
         "11_deck_upper": (chassis.deck(lower=False), 1, False),
-        "20_motor_adapter": (chassis.motor_adapter(), 2, True),
         "22_caster_spacer": (spacer, 2, True),
         "30_battery_tray": (payload.battery_tray(), 1, True),
         "31_electronics_plate": (payload.electronics_plate(), 1, True),
@@ -41,6 +40,9 @@ def parts():
         "41_lidar_plate": (payload.lidar_plate(), 1, True),
         "50_module_plate": (payload.module_plate(), 1, True),
     }
+    if P.ADAPTER_T > 0:
+        d["20_motor_adapter"] = (chassis.motor_adapter(), 2, True)
+    return d
 
 
 def color(r, g, b):
@@ -59,8 +61,9 @@ def assembly(built):
         a.add(vcyl(P.STANDOFF_D, P.STANDOFF_H), name=f"standoff_{i}", loc=L(V(x, y, zl + t)), color=metal)
     for side, sign in (("left", 1), ("right", -1)):
         rot = 0 if sign > 0 else 180
-        a.add(built["20_motor_adapter"], name=f"motor_adapter_{side}",
-              loc=L(V(0, sign * P.FOOT_CY, zl - P.ADAPTER_T), V(0, 0, 1), rot), color=print_c)
+        if "20_motor_adapter" in built:
+            a.add(built["20_motor_adapter"], name=f"motor_adapter_{side}",
+                  loc=L(V(0, sign * P.FOOT_CY, zl - P.ADAPTER_T), V(0, 0, 1), rot), color=print_c)
         fx, fy = P.BRACKET_FOOT
         a.add(box(fx, fy, 2.5, cy=sign * P.FOOT_CY, z0=zl - P.ADAPTER_T - 2.5),
               name=f"bracket_foot_{side}", color=dark)

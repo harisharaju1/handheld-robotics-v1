@@ -36,7 +36,12 @@ CONNECTOR_ALLOW = 15.0        # encoder connector + wire bend
 
 # Printed adapter between bracket and deck. If the bracket hole pattern is off,
 # only this small part is reprinted; the laser-cut deck stays valid.
-ADAPTER_T = 6.0
+# Direct mount (Nov 4): the bracket foot bolts straight to the deck underside.
+# Its 4 holes are hand-drilled using the bracket itself as the template; the
+# deck carries 2 mm locating holes just outside each foot corner instead.
+ADAPTER_T = 0.0               # 0 = no printed adapter (set 6.0 to bring it back)
+FOOT_MARK_D = 2.0             # locating-hole diameter
+FOOT_MARK_GAP = 1.5           # locating holes sit this far outside the foot's corners
 ADAPTER_SIZE = (BRACKET_FOOT[0] + 14.0, BRACKET_FOOT[1] + 14.0)
 # MEASURE (trace the foot on paper): bracket holes relative to the foot centre,
 # (x across, y along the motor; +y = wheel side). Estimated from photos.

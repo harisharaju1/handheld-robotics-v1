@@ -45,8 +45,7 @@ x forward, y left, z up, origin on the floor under the wheel axle midpoint
 
 | Part | Orientation | Why |
 | --- | --- | --- |
-| 20_motor_adapter (x2) | Nut-pocket face **up** | Pockets print without supports; 100% infill |
-| 22_caster_spacer (x2) | Standing upright, either end down | 48.75 mm tall; 4 walls, 60% infill |
+| 22_caster_spacer (x2) | Standing upright, either end down | 42.75 mm tall; 4 walls, 60% infill |
 | 30_battery_tray | Flat base down | Countersinks face up |
 | 31_electronics_plate | Grid face **down**, corner bosses up | No supports under the bosses |
 | 40_mast_base | Disc down | Boss prints vertically, tube bore stays round |
